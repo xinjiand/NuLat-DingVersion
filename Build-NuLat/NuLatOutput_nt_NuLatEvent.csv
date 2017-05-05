@@ -1,0 +1,30 @@
+#class tools::wcsv::ntuple
+#title NuLatEvent
+#separator 44
+#column int EventID
+#column int EventSeed
+#column int PrimaryParticleIDNumber
+#column double PrimaryParticleKEnergy
+#column double PrimaryParticleVertexX
+#column double PrimaryParticleVertexY
+#column double PrimaryParticleVertexZ
+#column double PrimaryParticleVertexT
+#column double PrimaryParticleMomentumMagnitude
+#column double PrimaryParticleMomentumX
+#column double PrimaryParticleMomentumY
+#column double PrimaryParticleMomentumZ
+#column double TotalEnergyDeposited
+#column int NumberOfCellsHit
+#column int NumberOfEnergyDepositions
+#column int NumberOfPhotonHits
+#column int NumberOfPMTHits
+0,0,0,0.5,0,0,0,0,0.5,0,0,0.5,48.9344,7,196,1944,37
+1,0,0,0.5,0,0,0,0,0.5,0,0,0.5,49.5771,6,179,2128,29
+2,0,0,0.5,0,0,0,0,0.5,0,0,0.5,48.7654,15,211,1925,37
+3,0,0,0.5,0,0,0,0,0.5,0,0,0.5,57.6922,6,189,6050,78
+4,0,0,0.5,0,0,0,0,0.5,0,0,0.5,47.9178,15,196,3531,49
+5,0,0,0.5,0,0,0,0,0.5,0,0,0.5,55.2933,12,235,4311,48
+6,0,0,0.5,0,0,0,0,0.5,0,0,0.5,55.8362,14,251,2450,43
+7,0,0,0.5,0,0,0,0,0.5,0,0,0.5,56.3394,23,290,2395,43
+8,0,0,0.5,0,0,0,0,0.5,0,0,0.5,58.335,6,224,823,45
+9,0,0,0.5,0,0,0,0,0.5,0,0,0.5,63.4865,6,211,3007,60
