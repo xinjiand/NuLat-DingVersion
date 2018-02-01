@@ -57,10 +57,7 @@ class NuLatDetectorConstruction : public G4VUserDetectorConstruction
 
     G4LogicalVolume* HamamatsuR10533();
     G4LogicalVolume* LightGuideAndPMT(G4double dx1, G4double dx2, G4double dy1, G4double dy2, G4double dz);
-    G4LogicalVolume* MirrorAndPMT(G4double xd, G4double yd,  G4double rd, G4double zd);
     G4LogicalVolume* LightGuideAndPMTLog;
-    G4LogicalVolume* MirrorAndPMTLog;
-    G4LogicalVolume* MirrorLogical;
     G4LogicalVolume* NuLatLightGuideZBankPlusLogical;
     G4LogicalVolume* NuLatLightGuideZBankMinusLogical;
     G4LogicalVolume* NuLatLightGuideYBankPlusLogical;

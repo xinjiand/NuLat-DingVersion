@@ -80,8 +80,9 @@ NuLatRunAction::NuLatRunAction()
   analysisManager->CreateNtupleIColumn(0, "PMTYPosition", PhotonPMTYHitVector);                // column Id = 33
   analysisManager->CreateNtupleIColumn(0, "PMTZPosition", PhotonPMTZHitVector);                // column Id = 34
   analysisManager->CreateNtupleDColumn(0, "PhotonTimeFromEventStart", PhotonPMTHitTimeVector); // column Id = 35
-
-
+  analysisManager->CreateNtupleDColumn(0, "PhotonTimeFromEventStart", PhotonPMTHitTimeVector);
+  analysisManager->CreateNtupleIColumn(0,"voxlebeinghited",Voxelhited);						// column Id = 36
+  analysisManager->CreateNtupleIColumn(0,"pmtbeinghited",Pmthited);								// column Id = 37
   analysisManager->FinishNtuple(0);
 
 
@@ -111,12 +112,9 @@ void NuLatRunAction::BeginOfRunAction(const G4Run* /*run*/)
 void NuLatRunAction::EndOfRunAction(const G4Run* run)
 {
 	const NuLatRun* myrun = dynamic_cast<const NuLatRun*>(run);
-	ofstream voxel, pmt ;
-	voxel.open ("voxel.txt");
-	pmt.open ("pmt.txt");
-	G4int nEvets = myrun->GetNumberOfEvent();
 	if ( myrun )
 	{
+		G4int nEvets = myrun->GetNumberOfEvent();
 		if ( nEvets < 1 )
 		{
 			G4ExceptionDescription msg;
@@ -142,16 +140,7 @@ void NuLatRunAction::EndOfRunAction(const G4Run* run)
 	}
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   analysisManager->Write();
-  for (int i=0; i<=nEvets ; i++)
-  {
-	  voxel << "output the" << i << "th event" << endl;
-	  pmt << "output the" << i << "th event" << endl;
-
-  }
-  G4cout << "End of run, analysis being wrote into root file." << G4endl;
   analysisManager->CloseFile();
-  voxel.close();
-  pmt.close();
 }
 
 

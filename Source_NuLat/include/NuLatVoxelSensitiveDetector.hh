@@ -59,6 +59,7 @@ public:
 
 
 private:
+    static vector <G4int> voxelhited ;
     NuLatVoxelHitsCollection* voxelHitCollection;
     G4int voxelHitCollectionID;
     G4int    localNOfVoxelsInX;

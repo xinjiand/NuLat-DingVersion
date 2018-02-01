@@ -89,8 +89,9 @@ G4bool NuLatPhotoCathodeSensitiveDetector::ProcessHits(G4Step*step, G4TouchableH
 {
 
 
-  //G4double edep = step->GetTotalEnergyDeposit();
-  G4double wLength = 0.0; //0.00000124*eV*m/edep;
+  G4double edep = step->GetTotalEnergyDeposit();
+  G4double wLength = 0.00000124*eV*m/edep; //0.00000124*eV*m/edep;
+  //G4cout <<"edep=" << edep << G4endl;
 
 //  if (edep==0.)
 //    return true;

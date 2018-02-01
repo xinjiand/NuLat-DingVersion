@@ -23,6 +23,7 @@ G4ThreadLocal G4Allocator<NuLatVoxelHit>* NuLatVoxelHitAllocator=0;
 NuLatVoxelHit::NuLatVoxelHit():
 G4VHit(),
 fCellID(-1),
+//entrycount(0),
 eDep(0),
 fPos(0),
 fPLogV(0)
@@ -39,6 +40,10 @@ vector<G4double>  NuLatVoxelHit::eDepPositionX;
 vector<G4double>  NuLatVoxelHit::eDepPositionY;
 vector<G4double>  NuLatVoxelHit::eDepPositionZ;
 vector<G4double>  NuLatVoxelHit::eDepTime;
+vector<G4int> NuLatVoxelHit::voxelhited;
+vector<G4int> NuLatVoxelHit::entries;
+G4int NuLatVoxelHit::entrycount=0;
+
 
 
 
@@ -46,6 +51,7 @@ vector<G4double>  NuLatVoxelHit::eDepTime;
 NuLatVoxelHit::NuLatVoxelHit(G4int z): 
 G4VHit(),
 fCellID(z),
+//entrycount(0),
 eDep(0),
 fPos(0),
 fPLogV(0)
@@ -66,6 +72,7 @@ G4VHit()
     fPos    = right.fPos;
     fRot    = right.fRot;
     fPLogV  = right.fPLogV;
+    //entrycount=right.entrycount;
 }
 
 
@@ -86,6 +93,7 @@ const NuLatVoxelHit& NuLatVoxelHit::operator= (const NuLatVoxelHit &right)
     fPos     = right.fPos;
     fRot     = right.fRot;
     fPLogV   = right.fPLogV;
+    //entrycount=right.entrycount;
     return *this;
 }
 

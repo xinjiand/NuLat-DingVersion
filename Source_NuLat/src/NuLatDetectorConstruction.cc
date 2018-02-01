@@ -111,28 +111,19 @@ G4LogicalVolume* NuLatDetectorConstruction::WorldVolume()
                                            (voxelYDimension+voxelSpacingYDimension-0.127*cm), 4.6*cm,
                                             LightGuideTaperLength);
     
-    MirrorAndPMTLog = MirrorAndPMT ((voxelXDimension+voxelSpacingXDimension-0.127*cm),
-    								   (voxelYDimension+voxelSpacingYDimension-0.127*cm),
-									   1.811*2.54/2*cm ,
-									   0.1*mm) ;
-    G4double MirrorAndPMTLength = 0.1*mm+20*cm ;
-
-    // NuLat Mirror test
-
-
     // NuLat LightGuide z+ Bank
     G4VSolid* NuLatLightGuideZBankPlusSolid
       = new G4Box("NuLatLightGuideZBankPlusBox",
                   NuLatVoxelatedCalorimeterBoxXDimension/2,
                   NuLatVoxelatedCalorimeterBoxYDimension/2,
-                  (MirrorAndPMTLength)/2);
+                  (lightGuideWithPMTLength)/2);
       
     NuLatLightGuideZBankPlusLogical
       = new G4LogicalVolume(NuLatLightGuideZBankPlusSolid,
                             NuLatMaterials->air,
                             "NuLatLightGuideZBankPlusLogical");
                             
-    new G4PVPlacement(0,G4ThreeVector(0.,0.,NuLatVoxelatedCalorimeterBoxZDimension/2+(MirrorAndPMTLength)/2 +.010*2.54*cm),NuLatLightGuideZBankPlusLogical,
+    new G4PVPlacement(0,G4ThreeVector(0.,0.,NuLatVoxelatedCalorimeterBoxZDimension/2+(lightGuideWithPMTLength)/2 +.010*2.54*cm),NuLatLightGuideZBankPlusLogical,
                       "NuLatLightGuideZBankPlusPhysical",experimentalHallLog,
                       false,0,checkOverlaps);
 
@@ -142,7 +133,7 @@ G4LogicalVolume* NuLatDetectorConstruction::WorldVolume()
         voxelXDimension/2, voxelYDimension/2, voxelZDimension/2,
         voxelSpacingXDimension/2, voxelSpacingYDimension/2, voxelSpacingZDimension/2, 0, 0, 1);
       
-    new G4PVParameterised("LightGuidePhysicalZPlus", MirrorAndPMTLog,NuLatLightGuideZBankPlusLogical,
+    new G4PVParameterised("LightGuidePhysicalZPlus",LightGuideAndPMTLog,NuLatLightGuideZBankPlusLogical,
                           kZAxis,nOfVoxelsInX*nOfVoxelsInY,lightGuideParamZBankPlus);
 
 
@@ -493,65 +484,6 @@ G4LogicalVolume* NuLatDetectorConstruction::LightGuideAndPMT(G4double dx1, G4dou
     return(lightGuide);
 }
 
-G4LogicalVolume* NuLatDetectorConstruction::MirrorAndPMT(G4double xd, G4double yd, G4double rd, G4double zd)
-{
-	  //G4VSolid* lightGuideTrd = new G4Trd("LightGuideTrd", dx1/2, dx2/2, dy1/2, dy2/2, dz/2);
-
-	 /* G4double r1max = 3.465*2.54/2*cm;
-	  G4double r1min = 0.0*cm;
-	  G4double r2max = 1.811*2.54/2*cm;
-	  G4double r2min = 0.0*cm;
-	  G4VSolid* lightGuideCone = new G4Cons("LightGuideCone", r1min, r1max, r2min, r2max, dz/2, 0, 360*deg);
-	  G4bool checkOverlaps = true;
-
-	  G4Box* lightGuideSquare = new G4Box( "LightGuideSquare", dx1/2, dy1/2, 0.5*cm/2); */
-
-	    G4Cons* MirrorCircle = new G4Cons ("MirrorCircle",0*cm, rd , 0*cm, rd, zd/2 , 0, 360*deg);
-	    G4Box* MirrorSquare = new G4Box ("MirrorBox" , xd/2 , yd/2 , zd/2);
-	    G4SubtractionSolid* MirrorOpen= new G4SubtractionSolid ("MirrorSquare-Circle" , MirrorSquare, MirrorCircle);
-	    G4bool checkOverlaps = true ;
-	  //G4IntersectionSolid* lightGuideTrdIntersLightGuideCone = new G4IntersectionSolid("Trd Intersect Cone", lightGuideTrd, lightGuideCone);
-
-	    G4VSolid* lightGuideBox
-	      = new G4Box("lightGuideBox",xd/2, yd/2, (zd+19.863*cm)/2);
-
-	    G4LogicalVolume* lightGuide
-	      = new G4LogicalVolume(lightGuideBox,
-	                            NuLatMaterials->air,
-	                            "lightGuide");
-	    MirrorLogical
-	      = new G4LogicalVolume(MirrorSquare,
-	                            NuLatMaterials->muMetal,
-	                            "MirrorLogical");
-	   /* lightGuideSquareLog
-	     = new G4LogicalVolume(lightGuideSquare,
-	                            NuLatMaterials->acrylic,
-	                            "lightGuideSquareLog"); */
-
-	    new G4PVPlacement(0,G4ThreeVector(0.,0.,- 19.863*cm/2),MirrorLogical,
-	                      "guide001",lightGuide,
-	                      false,0,checkOverlaps);
-	   // new G4PVPlacement(0,G4ThreeVector(0.,0.,1.0*dz/2 - 19.863*cm/2),lightGuideSquareLog,
-	   //                   "guide002",lightGuide,
-	   //                   false,0,checkOverlaps);
-
-	   PMTLog = HamamatsuR10533();
-	   new G4PVPlacement(0,G4ThreeVector(0.,0.,zd/2),PMTLog,
-	                      "PMT",lightGuide,
-	                      false,0,checkOverlaps);
-
-	  G4VisAttributes* visAttributes = new G4VisAttributes(false);
-	    lightGuide->SetVisAttributes(visAttributes);
-	    NuLatVisAttributes.push_back(visAttributes);
-
-	  visAttributes = new G4VisAttributes(G4Colour(255,0,255,.3));
-	    lightGuideTrdIntersLightGuideConeLog->SetVisAttributes(visAttributes);
-
-	    lightGuideSquareLog->SetVisAttributes(visAttributes);
-	    NuLatVisAttributes.push_back(visAttributes);
-
-	    return(lightGuide);
-}
 
 
 void NuLatDetectorConstruction::ConstructSDandField()

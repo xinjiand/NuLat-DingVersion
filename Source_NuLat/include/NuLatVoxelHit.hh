@@ -53,6 +53,8 @@ public:
   void AddEdep(G4double de) { eDep += de;}
   G4double GetEdep() const { return eDep; }
 
+  void AddEntry() {entrycount=entrycount+1;}
+
   void SetPos(G4ThreeVector xyz) { fPos = xyz; }
   G4ThreeVector GetPos() const { return fPos; }
 
@@ -68,6 +70,9 @@ public:
   void PushEDepPositionY(G4double Y)          { eDepPositionY.push_back(Y); }
   void PushEDepPositionZ(G4double Z)          { eDepPositionZ.push_back(Z); }
   void PushEDepTime(G4double time)            { eDepTime.push_back(time); }
+  void PushEntryCount (G4int entryn)	      { entries.push_back(entryn);}
+  void PushVoxelHited (G4int voxeln)          { voxelhited.push_back(voxeln);}
+  G4int GetEntryCount ()                      {return entrycount;}
     
   std::vector<G4int>     GetEDepParticleTypeIDNumberVector() { return  eDepParticleTypeIDNumber; }
   std::vector<G4double>  GetEDepVector()                     { return  eDepEDep; }
@@ -75,6 +80,8 @@ public:
   std::vector<G4double>  GetEDepPositionYVector()            { return  eDepPositionY; }
   std::vector<G4double>  GetEDepPositionZVector()            { return  eDepPositionZ; }
   std::vector<G4double>  GetEDepTimeVector()                 { return  eDepTime; }
+  std::vector<G4int>     GetVoxelHited()                     { return voxelhited;}
+  std::vector<G4int>     GetEntries()                        { return entries;}
     
   void ClearEDepParticleTypeIDNumberVector() { eDepParticleTypeIDNumber.clear(); }
   void ClearEDepVector()                      { eDepEDep.clear(); }
@@ -82,12 +89,17 @@ public:
   void ClearEDepPositionYVector()             { eDepPositionY.clear(); }
   void ClearEDepPositionZVector()             { eDepPositionZ.clear(); }
   void ClearEDepTimeVector()                  { eDepTime.clear(); }
+  void ClearVoxelHited()                      { voxelhited.clear();}
+  void ClearEntries()                         { entries.clear();}
+  void ClearEntryCount()                      { entrycount=0;}
     
 
     
 private:
   G4int fCellID;
+  static G4int entrycount;
   G4double eDep;
+
 
   static std::vector<G4int>  eDepParticleTypeIDNumber;
   static std::vector<G4double>  eDepEDep;
@@ -95,6 +107,9 @@ private:
   static std::vector<G4double>  eDepPositionY;
   static std::vector<G4double>  eDepPositionZ;
   static std::vector<G4double>  eDepTime;
+  static std::vector<G4int> voxelhited;
+  static std::vector<G4int> entries;
+
 
   G4ThreeVector fPos;
   G4RotationMatrix fRot;

@@ -301,7 +301,7 @@ G4double NuLatPrimaryParticleGenerator::GetRndReactorBackgroundGammaEnergyInMini
 G4double NuLatPrimaryParticleGenerator::GetRndSpecialNuclearMaterialNeutronFissionEnergy()
 {
   //Reference P239 spectrum Eq 13 of Reference http://www.physicsegypt.org/jnrp/v6n003.pdf
-  G4int specialNuclearMaterialNeutronFissionFlux[29]=
+  G4double specialNuclearMaterialNeutronFissionFlux[29]=
       {
       0.021295480617, 0.042500438503, 0.056103299644, 0.066913747572, 
       0.131010179356, 0.169661677782, 0.198515503359, 0.320938149138, 

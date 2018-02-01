@@ -191,7 +191,7 @@ class Materials
 //    Assumes that it is thin film acrylic (idealistic)
       G4double refractiveIndexAcrylic[numEntries];
       G4double absorptionAcrylic[numEntries];
-     // G4cout << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl;
+      G4cout << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl << G4endl;
       for(int i=0;i<numEntries;i++)
       {
          G4double wavelength = ((1240./photonEnergy[i])*nm)*static_cast<G4double>(pow(10.,-3.));
@@ -287,7 +287,7 @@ class Materials
       G4double refractiveIndexAir[numEntries];
       G4double absorptionAir[numEntries];
       for(int i=0; i<numEntries; i++){
-            refractiveIndexAir[i] = 1.003;
+            refractiveIndexAir[i] = 1.315;
             absorptionAir[i] = 100.*m;
       }
       G4MaterialPropertiesTable *airMat = new G4MaterialPropertiesTable();

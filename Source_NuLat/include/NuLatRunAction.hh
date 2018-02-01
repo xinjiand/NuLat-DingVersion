@@ -41,6 +41,8 @@ class NuLatRunAction : public G4UserRunAction
     std::vector<G4int> PhotonPMTYHitVector;
     std::vector<G4int> PhotonPMTZHitVector;
     std::vector<G4double> PhotonPMTHitTimeVector;
+    std::vector<G4int> Voxelhited;
+    std::vector<G4int> Pmthited;
 
     virtual void BeginOfRunAction(const G4Run*);
     virtual void   EndOfRunAction(const G4Run*);

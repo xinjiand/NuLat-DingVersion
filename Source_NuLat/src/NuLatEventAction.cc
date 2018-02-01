@@ -70,18 +70,16 @@ void NuLatEventAction::BeginOfEventAction(const G4Event* event)
 
   if(eventNumber%1000 == 0)
   {
-    if(eventNumber == 0)
+    if(eventNumber == 0) G4cout << G4endl;
     G4cout << "Begin of event " << eventNumber << G4endl;
   }
   if (fECHCID==-1) {
     G4SDManager* sdManager = G4SDManager::GetSDMpointer();
     fECHCID = sdManager->GetCollectionID("NuLatVoxel/NuLatVoxelColl"); //
-    G4cout << "fECHHCID=" << fECHCID << G4endl;
   }
   if (fPCHCID==-1) {
     G4SDManager* sdManager = G4SDManager::GetSDMpointer();
     fPCHCID = sdManager->GetCollectionID("nuLatPhotoCathode/NuLatPhotoCathodeColl"); //
-    G4cout << "fPCHCID=" << fPCHCID << G4endl;
   }
 }
 
@@ -92,10 +90,13 @@ void NuLatEventAction::BeginOfEventAction(const G4Event* event)
 //
 void NuLatEventAction::EndOfEventAction(const G4Event* event)
 {
-	ofstream pmttemp, voxeltemp;
-	pmttemp.open ("pmttemp.txt");
-	voxeltemp.open ("voxeltemp.txt");
-
+	ofstream pmtout;
+	pmtout.open("pmtanalysis.csv", ios::app);
+	pmtout << "EventID, particletype, PMTID, PMT-X, PMT-Y, PMT-Z, pehits, \n";
+	ofstream voxelout;
+	voxelout.open("voxelanalysis.csv",ios::app);
+	voxelout << "EventID, particletype, voxelID, plane, row, column, edep, \n";
+	int eventanalysisID = event->GetEventID();
 
     G4HCofThisEvent* hce = event->GetHCofThisEvent();
     if (!hce) 
@@ -175,10 +176,7 @@ void NuLatEventAction::EndOfEventAction(const G4Event* event)
 
 
 
-    /* Event data collection for voxel unit, it search through all over the voxel unit, pick up all the unit with energy deposit
-     * Total energy and Total voxel number being deposited being couted
-     * Each deposition included energy, cellID, X,Y Z information being stored into four different vector
-     */
+
 
     G4int totalNuLatVoxelHit = 0;
     G4double totalNuLatVoxelEnergy = 0.;
@@ -186,10 +184,8 @@ void NuLatEventAction::EndOfEventAction(const G4Event* event)
     {
         NuLatVoxelHit* hit = (*ecHC)[i];
         G4double eDep = hit->GetEdep();
-
         if (eDep>0.)
         {
-        	G4cout << i << "th voxel has eDep to be " << eDep << G4endl;
             totalNuLatVoxelHit++;
             totalNuLatVoxelEnergy += eDep; 
             G4int cellID = hit->GetCellID();
@@ -201,27 +197,11 @@ void NuLatEventAction::EndOfEventAction(const G4Event* event)
             NuLatRunActionLocal->CellXHitVector.push_back(column);
             NuLatRunActionLocal->CellYHitVector.push_back(row);
             NuLatRunActionLocal->CellZHitVector.push_back(plane);
+            voxelout << eventanalysisID << "," << primaryParticle->GetG4code()->GetParticleName() << "," << i <<"," << plane <<"," << row <<"," << column << "," << eDep << "," << "\n";
         }
-        vector<double> edep=hit->GetEDepVector();
-        G4int number = hit->GetEDepVector().size();
-        voxeltemp << "number" << i << "th voxel \t" << number << "Entries"<<endl;
-
-        for (G4int j=0; j<edep.size(); j++)
-        {
-        	voxeltemp << j << "out of " << number << "edep=" << edep[j] << endl;
-        }
-
-
+	
     }
-
     
-
-    /* Event data collection for pmt unit, it search through all over the pmt unit, pick up all the unit with energy deposit
-     * Total energy and Total pmt number being deposited being couted
-     * The different compare to the voxel unit before is it has to recreate the XYZ ID based on the hitcollection ID
-     *
-     */
-
     G4int totalPMTHit=0;
     G4int totalPE=0;
     G4int totalNumberOfPMTs = 2*(localNOfVoxelsInX*localNOfVoxelsInY 
@@ -233,7 +213,6 @@ void NuLatEventAction::EndOfEventAction(const G4Event* event)
         G4int peHits = hit->GetPEHits();
         if (peHits>0.)
         {
-        	// G4cout << "Temporary test about how much peHits will be counted, this time =" << peHits << G4endl;
             G4int xID = -1;
             G4int yID = -1;
             G4int zID = -1;
@@ -305,12 +284,13 @@ void NuLatEventAction::EndOfEventAction(const G4Event* event)
             }
             else
             {
-              G4cout   << G4endl <<  G4endl <<  G4endl << "ERROR" << G4endl <<  G4endl <<  G4endl;
+              G4cout  << "ERROR" <<  G4endl;
             }
             NuLatRunActionLocal->PMTPEVector.push_back(peHits);
             NuLatRunActionLocal->PMTXPEVector.push_back(xID);
             NuLatRunActionLocal->PMTYPEVector.push_back(yID);
             NuLatRunActionLocal->PMTZPEVector.push_back(zID);
+	    pmtout << eventanalysisID << "," << primaryParticle->GetG4code()->GetParticleName() << "," << i << "," << xID << "," << yID << "," << zID << "," << peHits << "," << "\n";
 
 //            G4int cellID = hit->GetCellID();
 //            G4int column = 1+(cellID % 225)/ 15;
@@ -322,10 +302,8 @@ void NuLatEventAction::EndOfEventAction(const G4Event* event)
 //            NuLatRunActionLocal->CellYHitVector.push_back(row);
 //            NuLatRunActionLocal->CellZHitVector.push_back(plane);
         }
-        pmttemp << "number" << i << "th pmt \t" << hit->GetPhotonPMTHitWavelengthVector().size() << "Entries"<<endl;
     }
-
-   {
+    {
     NuLatVoxelHit* hitVectors = (*ecHC)[0];
     NuLatPhotoCathodeHit* NuLatPhotoCathodeHitHitVectors = (*pcHC)[0];
     
@@ -471,10 +449,6 @@ void NuLatEventAction::EndOfEventAction(const G4Event* event)
       analysisManager->AddNtupleRow();  //Note: vectors being cleared below are added at this point as well
     }
     
-    voxeltemp.close();
-    pmttemp.close();
-
-    G4cout << "Event analysis being wrote at this time."<< G4endl;
     // clear cell vectors
     NuLatRunActionLocal->CellEnergyVector.clear();                   // column Id = 17
     NuLatRunActionLocal->CellXHitVector.clear();                     // column Id = 18
@@ -530,6 +504,10 @@ void NuLatEventAction::EndOfEventAction(const G4Event* event)
 					<< G4endl;
     	}
     }
+	pmtout.clear();
+	pmtout.close();
+	voxelout.clear();
+	voxelout.close();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

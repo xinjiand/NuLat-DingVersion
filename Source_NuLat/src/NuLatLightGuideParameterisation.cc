@@ -172,6 +172,7 @@ NuLatLightGuideParameterisation::NuLatLightGuideParameterisation(
           zLightGuide[copyNo] = (((zCellIndex) - (nOfVoxelsInZ/2+0.5)) * voxSpacingZ)*2;
         rotm[copyNo]  = new G4RotationMatrix(G4ThreeVector(0,1,0), 270*deg);
       }
+ 
     }
   }
   else if(xselector == -1 && yselector == 0 && zselector == 0)
@@ -180,6 +181,7 @@ NuLatLightGuideParameterisation::NuLatLightGuideParameterisation(
     {
       if(copyNo<nOfVoxelsInZ*nOfVoxelsInY)
       {
+
         G4int zCellIndex = 1+(copyNo % (nOfVoxelsInZ*nOfVoxelsInY))/ nOfVoxelsInY;
         G4int yCellIndex = 1+copyNo % nOfVoxelsInY;
 
@@ -195,6 +197,7 @@ NuLatLightGuideParameterisation::NuLatLightGuideParameterisation(
           zLightGuide[copyNo] = (((zCellIndex) - (nOfVoxelsInZ/2+0.5)) * voxSpacingZ)*2;
         rotm[copyNo]  = new G4RotationMatrix(G4ThreeVector(0,1,0), 90*deg);
       }
+ 
     }
   }
 }

@@ -50,6 +50,7 @@ NuLatVoxelSensitiveDetector::NuLatVoxelSensitiveDetector(G4String name,
 
 
 
+
 NuLatVoxelSensitiveDetector::~NuLatVoxelSensitiveDetector()
 {}
 
@@ -87,6 +88,7 @@ G4bool NuLatVoxelSensitiveDetector::ProcessHits(G4Step*step, G4TouchableHistory*
 
   G4double edep = step->GetTotalEnergyDeposit();
 
+
   if (edep==0.)
     return true;
 
@@ -111,9 +113,9 @@ G4bool NuLatVoxelSensitiveDetector::ProcessHits(G4Step*step, G4TouchableHistory*
   // add energy deposit to this voxel
   hit->AddEdep(edep);
 
- //G4cout<< copyNo << "th voxel has " << edep << "Energy being deposited now" << G4endl;
- //G4cout<< "Total energy deposited at this voxel now is" << hit->GetEdep() << G4endl;
-
+  hit->PushVoxelHited (copyNo);
+  hit->PushEntryCount (hit->GetEntryCount());
+  hit->AddEntry();
 
   // push onto the appropriate vectors the
   // values associated with the energy deposit (EDep)
@@ -123,6 +125,8 @@ G4bool NuLatVoxelSensitiveDetector::ProcessHits(G4Step*step, G4TouchableHistory*
   hit->PushEDepPositionY(step->GetTrack()->GetPosition().y());
   hit->PushEDepPositionZ(step->GetTrack()->GetPosition().z());
   hit->PushEDepTime(step->GetTrack()->GetGlobalTime());
+
+  // G4cout << copyNo << "voxel being deposited this time" << endl;
 
 
   return true;
